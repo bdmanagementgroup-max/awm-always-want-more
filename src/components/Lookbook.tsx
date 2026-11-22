@@ -89,40 +89,40 @@ export const Lookbook: React.FC<LookbookProps> = ({ products, onQuickView }) => 
   };
 
   return (
-    <section ref={sectionRef} className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section ref={sectionRef} className="py-12 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header */}
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="flex flex-col md:flex-row md:items-end justify-between mb-8"
+        transition={{ duration: 0.5, ease: 'easeOut' }}
+        className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 gap-4"
       >
         <div>
-          <div className="text-xs font-mono-tech text-amber-400 uppercase tracking-widest">EDITORIAL EDIT</div>
-          <h2 className="text-3xl sm:text-5xl font-syne font-black text-white mt-1 uppercase">
+          <div className="text-[10px] sm:text-xs font-mono-tech text-amber-400 uppercase tracking-widest">EDITORIAL EDIT</div>
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-syne font-black text-white mt-1 uppercase">
             AWM SS26 LOOKBOOK
           </h2>
         </div>
 
         {/* Controls */}
-        <div className="flex items-center gap-4 mt-4 md:mt-0">
+        <div className="flex items-center gap-3 self-end sm:self-auto">
           <button
             onClick={() => navigate(-1)}
-            className="p-2.5 rounded-full glass-panel border border-white/15 text-zinc-300 hover:text-white hover:border-amber-400/50 hover:bg-amber-400/10 transition-all"
+            className="p-2 sm:p-2.5 rounded-full glass-panel border border-white/15 text-zinc-300 hover:text-white hover:border-amber-400/50 hover:bg-amber-400/10 active:scale-90 transition-all"
             aria-label="Previous slide"
           >
-            <ChevronLeft size={18} />
+            <ChevronLeft size={16} />
           </button>
 
           {/* Dot indicators */}
-          <div className="flex gap-2">
+          <div className="flex gap-1.5 sm:gap-2">
             {looks.map((_, idx) => (
               <motion.button
                 key={idx}
                 onClick={() => { setDirection(idx > activeLook ? 1 : -1); setActiveLook(idx); }}
                 animate={{
-                  width: activeLook === idx ? 32 : 10,
+                  width: activeLook === idx ? 28 : 8,
                   backgroundColor: activeLook === idx ? '#fbbf24' : '#3f3f46',
                 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 28 }}
@@ -134,16 +134,16 @@ export const Lookbook: React.FC<LookbookProps> = ({ products, onQuickView }) => 
 
           <button
             onClick={() => navigate(1)}
-            className="p-2.5 rounded-full glass-panel border border-white/15 text-zinc-300 hover:text-white hover:border-amber-400/50 hover:bg-amber-400/10 transition-all"
+            className="p-2 sm:p-2.5 rounded-full glass-panel border border-white/15 text-zinc-300 hover:text-white hover:border-amber-400/50 hover:bg-amber-400/10 active:scale-90 transition-all"
             aria-label="Next slide"
           >
-            <ChevronRight size={18} />
+            <ChevronRight size={16} />
           </button>
         </div>
       </motion.div>
 
       {/* Slide */}
-      <div className="relative rounded-3xl overflow-hidden min-h-[460px] sm:min-h-[560px] flex items-end border border-white/10 shadow-2xl">
+      <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden min-h-[420px] xs:min-h-[460px] sm:min-h-[560px] flex items-end border border-white/10 shadow-2xl">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={activeLook}
@@ -168,60 +168,54 @@ export const Lookbook: React.FC<LookbookProps> = ({ products, onQuickView }) => 
 
             {/* Accent color bleed top-right */}
             <div
-              className="absolute top-0 right-0 w-96 h-96 rounded-full blur-[160px] opacity-20 pointer-events-none"
+              className="absolute top-0 right-0 w-64 sm:w-96 h-64 sm:h-96 rounded-full blur-[140px] opacity-20 pointer-events-none"
               style={{ backgroundColor: current.accent }}
             />
           </motion.div>
         </AnimatePresence>
 
-        {/* Content overlay — always rendered, re-animates per slide */}
+        {/* Content overlay */}
         <AnimatePresence mode="wait">
           <motion.div
             key={`content-${activeLook}`}
-            className="relative z-10 p-8 sm:p-14 max-w-xl space-y-5"
+            className="relative z-10 p-5 sm:p-10 md:p-14 max-w-xl space-y-3 sm:space-y-4"
             initial="hidden"
             animate="visible"
           >
             <motion.div custom={0} variants={contentVariants}>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-white text-xs font-mono-tech uppercase">
-                <Sparkles size={12} style={{ color: current.accent }} />
+              <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-white text-[10px] sm:text-xs font-mono-tech uppercase">
+                <Sparkles size={11} style={{ color: current.accent }} />
                 <span>{current.specs}</span>
               </div>
             </motion.div>
 
             <motion.div custom={1} variants={contentVariants}>
-              <h3 className="text-4xl sm:text-6xl font-syne font-black uppercase leading-[0.9]">
+              <h3 className="text-2xl xs:text-3xl sm:text-5xl md:text-6xl font-syne font-black uppercase leading-[0.92]">
                 <span className="text-white">{current.title}</span>
                 <br />
                 <span style={{ color: current.accent }}>{current.subtitle}</span>
               </h3>
             </motion.div>
 
-            <motion.p custom={2} variants={contentVariants} className="text-zinc-300 text-sm font-mono-tech">
+            <motion.p custom={2} variants={contentVariants} className="text-zinc-300 text-xs sm:text-sm font-mono-tech line-clamp-2 sm:line-clamp-none">
               {current.tagline}
             </motion.p>
 
-            <motion.div custom={3} variants={contentVariants}>
-              <motion.button
+            <motion.div custom={3} variants={contentVariants} className="pt-1">
+              <button
                 onClick={() => onQuickView(linkedProduct)}
-                whileHover={{ scale: 1.04, backgroundColor: current.accent, color: '#000' }}
-                whileTap={{ scale: 0.97 }}
-                className="px-7 py-4 rounded-full bg-white text-black font-syne font-black text-xs uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-2xl transition-colors overflow-hidden relative"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white text-black font-syne font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-2xl transition-colors active:scale-98"
+                style={{ backgroundColor: current.accent }}
               >
-                <motion.span
-                  className="absolute inset-0 opacity-0"
-                  whileHover={{ opacity: 1 }}
-                  style={{ backgroundColor: current.accent }}
-                />
-                <span className="relative">SHOP THIS LOOK • {linkedProduct.price}</span>
-                <ArrowUpRight size={16} className="relative" />
-              </motion.button>
+                <span>SHOP THIS LOOK • {linkedProduct.price}</span>
+                <ArrowUpRight size={15} />
+              </button>
             </motion.div>
           </motion.div>
         </AnimatePresence>
 
         {/* Slide counter */}
-        <div className="absolute bottom-6 right-8 z-10 font-mono-tech text-xs text-zinc-400">
+        <div className="absolute top-4 sm:top-auto sm:bottom-6 right-4 sm:right-8 z-10 font-mono-tech text-xs text-zinc-400 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10 sm:bg-transparent sm:border-none sm:p-0">
           <span className="text-white font-bold">{String(activeLook + 1).padStart(2, '0')}</span>
           {' / '}
           {String(looks.length).padStart(2, '0')}

@@ -13,12 +13,12 @@ export const Footer: React.FC = () => {
           
           {/* Brand Col */}
           <div className="space-y-4 md:col-span-1">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-amber-400 text-black font-syne font-black text-sm flex items-center justify-center">
-                AWM
-              </div>
-              <span className="font-syne font-black text-white text-base tracking-wider">
+            <div className="flex flex-col">
+              <span className="font-syne font-black text-white text-lg tracking-wider">
                 ALWAYS WANT MORE
+              </span>
+              <span className="text-[10px] tracking-[0.25em] text-zinc-500 font-mono-tech">
+                LONDON • STREETWEAR
               </span>
             </div>
             <p className="text-zinc-500 leading-relaxed">

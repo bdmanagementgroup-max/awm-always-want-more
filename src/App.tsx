@@ -164,22 +164,22 @@ export function App() {
       />
 
       {/* Main Catalog Section */}
-      <section id="products-section" className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-8 border-b border-white/10">
+      <section id="products-section" className="py-10 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4 pb-6 sm:pb-8 border-b border-white/10">
           <div>
-            <div className="inline-flex items-center gap-2 text-xs font-mono-tech text-amber-400 uppercase tracking-widest mb-1">
-              <Flame size={14} />
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-mono-tech text-amber-400 uppercase tracking-widest mb-1">
+              <Flame size={13} />
               <span>LIVE RELEASES • SS26 CAPSULE</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl font-syne font-black text-white uppercase">
+            <h2 className="text-2xl xs:text-3xl sm:text-5xl font-syne font-black text-white uppercase">
               {activeCategory === 'all' ? 'THE FULL ARCHIVE' : `${activeCategory} COLLECTION`}
             </h2>
           </div>
 
           {/* Sort & Filter controls */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 px-3 py-2 rounded-xl glass-panel border border-white/10 text-xs font-mono-tech text-zinc-300">
-              <SlidersHorizontal size={14} className="text-amber-400" />
+          <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0">
+            <div className="flex items-center gap-2 px-3 py-1.5 sm:py-2 rounded-xl glass-panel border border-white/10 text-xs font-mono-tech text-zinc-300">
+              <SlidersHorizontal size={13} className="text-amber-400" />
               <span>SORT:</span>
               <select
                 value={sortBy}

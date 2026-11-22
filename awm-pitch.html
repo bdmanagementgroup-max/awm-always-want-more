@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AWM Redesign Pitch</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  /* ── Reset ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --amber: #f59e0b;
+    --amber-lt: #fbbf24;
+    --amber-dk: #d97706;
+    --bg: #09090d;
+    --surface: #111117;
+    --surface2: #18181f;
+    --border: rgba(255,255,255,0.09);
+    --text: #f4f4f5;
+    --muted: #71717a;
+    --green: #22c55e;
+    --blue: #38bdf8;
+    --page-w: 210mm;
+    --page-h: 297mm;
+  }
+
+  html, body {
+    width: var(--page-w);
+    background: #000;
+    font-family: 'Outfit', sans-serif;
+    color: var(--text);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* ── Page shells ── */
+  .page {
+    width: var(--page-w);
+    height: var(--page-h);
+    overflow: hidden;
+    position: relative;
+    background: var(--bg);
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Fonts ── */
+  .syne  { font-family: 'Syne', sans-serif; }
+  .mono  { font-family: 'Space Grotesk', monospace; }
+
+  /* ── Utilities ── */
+  .amber   { color: var(--amber); }
+  .amber-lt { color: var(--amber-lt); }
+  .muted   { color: var(--muted); }
+  .green   { color: var(--green); }
+  .blue    { color: var(--blue); }
+  .upper   { text-transform: uppercase; letter-spacing: 0.08em; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 10px; border-radius: 999px;
+    font-size: 8px; font-family: 'Space Grotesk', monospace;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .pill-amber { background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.4); color: var(--amber-lt); }
+  .pill-green { background: rgba(34,197,94,0.15);  border: 1px solid rgba(34,197,94,0.4);  color: var(--green); }
+  .pill-blue  { background: rgba(56,189,248,0.15); border: 1px solid rgba(56,189,248,0.4);  color: var(--blue); }
+  .pill-white { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: #fff; }
+
+  .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 2px; }
+  .dot-amber { background: var(--amber); }
+  .dot-green { background: var(--green); }
+
+  /* ── Ambient glows ── */
+  .glow-tl {
+    position: absolute; top: -80px; left: -80px;
+    width: 320px; height: 320px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,158,11,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .glow-br {
+    position: absolute; bottom: -100px; right: -60px;
+    width: 280px; height: 280px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(56,189,248,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .glow-tr {
+    position: absolute; top: -60px; right: -80px;
+    width: 260px; height: 260px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* ── Grid mesh bg ── */
+  .mesh-bg {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  /* ── Gradient rule ── */
+  .rule {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(245,158,11,0.5), transparent);
+    margin: 10px 0;
+  }
+  .rule-subtle {
+    height: 1px;
+    background: rgba(255,255,255,0.07);
+    margin: 8px 0;
+  }
+
+  /* ═══════════════════════════════════
+       PAGE 1 STYLES
+  ═══════════════════════════════════ */
+
+  /* ── Top header bar ── */
+  .p1-header {
+    background: linear-gradient(90deg, #0d0d10 0%, #111117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 10mm 12mm 8mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .brand-badge {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .brand-mark {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--amber), var(--amber-dk));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 900;
+    font-size: 10px; color: #000; letter-spacing: -0.5px;
+  }
+  .brand-title {
+    font-family: 'Syne', sans-serif; font-weight: 900;
+    font-size: 15px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: #fff;
+    line-height: 1.1;
+  }
+  .brand-sub {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 7.5px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.18em; margin-top: 2px;
+  }
+
+  .doc-meta {
+    text-align: right;
+    font-family: 'Space Grotesk', monospace; font-size: 7.5px;
+    color: var(--muted); line-height: 1.6;
+  }
+  .doc-meta .live-url {
+    color: var(--amber-lt); font-weight: 700;
+  }
+
+  /* ── Hero strip ── */
+  .p1-hero {
+    padding: 6mm 12mm 5mm;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(245,158,11,0.06) 0%, transparent 50%);
+    flex-shrink: 0;
+  }
+  .p1-hero-eyebrow {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 8px; color: var(--amber);
+    text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 4px;
+  }
+  .p1-hero-title {
+    font-family: 'Syne', sans-serif; font-weight: 900;
+    font-size: 26px; color: #fff;
+    line-height: 1.0; text-transform: uppercase;
+  }
+  .p1-hero-title .accent {
+    background: linear-gradient(90deg, var(--amber), var(--amber-lt));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .p1-hero-sub {
+    font-size: 9.5px; color: rgba(255,255,255,0.55); margin-top: 5px;
+    max-width: 130mm; line-height: 1.6;
+  }
+
+  /* ── Main body grid ── */
+  .p1-body {
+    flex: 1;
+    padding: 6mm 12mm;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5mm;
+    overflow: hidden;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 5mm;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-amber-accent {
+    border-color: rgba(245,158,11,0.25);
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #fff; margin-bottom: 5px;
+  }
+  .card-subtitle {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 7px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 7px;
+  }
+
+  /* ── Feature list ── */
+  .feat-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .feat-list li {
+    display: flex; align-items: flex-start; gap: 5px;
+    font-size: 8.5px; color: rgba(255,255,255,0.75); line-height: 1.4;
+  }
+  .feat-list li::before {
+    content: '▸';
+    color: var(--amber); font-size: 8px; margin-top: 1px; flex-shrink: 0;
+  }
+
+  /* ── Metric grid ── */
+  .metric-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-top: 4px;
+  }
+  .metric-cell {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 5px 7px;
+  }
+  .metric-val {
+    font-family: 'Syne', sans-serif; font-weight: 900;
+    font-size: 18px; color: var(--amber-lt); line-height: 1;
+  }
+  .metric-label {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 6.5px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.12em; margin-top: 2px;
+  }
+
+  /* ── Before/After strip ── */
+  .ba-strip {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3px;
+  }
+  .ba-side {
+    padding: 5px 7px; border-radius: 6px;
+    font-size: 7.5px;
+  }
+  .ba-before {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.2);
+  }
+  .ba-after {
+    background: rgba(34,197,94,0.08);
+    border: 1px solid rgba(34,197,94,0.2);
+  }
+  .ba-label {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 7px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .ba-before .ba-label { color: #ef4444; }
+  .ba-after  .ba-label { color: var(--green); }
+  .ba-item {
+    display: flex; align-items: flex-start; gap: 4px;
+    font-size: 7.5px; color: rgba(255,255,255,0.65);
+    line-height: 1.4; margin-bottom: 2px;
+  }
+  .ba-before .ba-item::before { content: '✗'; color: #ef4444; font-size: 7px; margin-top: 1px; }
+  .ba-after  .ba-item::before { content: '✓'; color: var(--green); font-size: 7px; margin-top: 1px; }
+
+  /* ── Tech stack tags ── */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+  .tag {
+    padding: 2px 7px; border-radius: 999px;
+    font-family: 'Space Grotesk', monospace;
+    font-size: 7px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: rgba(255,255,255,0.65);
+  }
+  .tag.amber-tag {
+    background: rgba(245,158,11,0.12);
+    border-color: rgba(245,158,11,0.3);
+    color: var(--amber-lt);
+  }
+
+  /* ── Full-width bottom bar ── */
+  .p1-footer-bar {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 4mm 12mm;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 4mm;
+    flex-shrink: 0;
+  }
+  .footer-stat { text-align: center; }
+  .footer-stat .num {
+    font-family: 'Syne', sans-serif; font-weight: 900;
+    font-size: 20px; color: var(--amber-lt); display: block;
+  }
+  .footer-stat .lbl {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 7px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.12em;
+  }
+  .footer-divider {
+    width: 1px; background: var(--border); margin: auto 0;
+    height: 24px; justify-self: center;
+  }
+
+  /* ═══════════════════════════════════
+       PAGE 2 STYLES
+  ═══════════════════════════════════ */
+
+  .p2-header {
+    padding: 8mm 12mm 7mm;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(90deg, rgba(56,189,248,0.07) 0%, transparent 60%);
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-shrink: 0;
+  }
+  .p2-eyebrow {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 8px; color: var(--blue);
+    text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 4px;
+  }
+  .p2-title {
+    font-family: 'Syne', sans-serif; font-weight: 900;
+    font-size: 23px; color: #fff;
+    text-transform: uppercase; line-height: 1.0;
+  }
+  .p2-title .blue-accent {
+    background: linear-gradient(90deg, var(--blue), #818cf8);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .p2-sub {
+    font-size: 8.5px; color: rgba(255,255,255,0.5);
+    margin-top: 4px; max-width: 120mm; line-height: 1.6;
+  }
+
+  /* ── Page 2 body ── */
+  .p2-body {
+    flex: 1; padding: 5mm 12mm;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 4mm;
+    overflow: hidden;
+  }
+
+  /* ── Pillar card ── */
+  .pillar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 5mm;
+    position: relative; overflow: hidden;
+  }
+  .pillar-num {
+    font-family: 'Syne', sans-serif; font-weight: 900;
+    font-size: 36px; color: rgba(255,255,255,0.04);
+    position: absolute; top: 2px; right: 10px;
+    line-height: 1;
+  }
+  .pillar-eyebrow {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 7px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.15em;
+    margin-bottom: 3px;
+  }
+  .pillar-title {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 11.5px; color: #fff;
+    text-transform: uppercase; margin-bottom: 6px;
+  }
+
+  /* ── KPI bar ── */
+  .kpi-row {
+    display: flex; gap: 4px; margin-top: 4px;
+  }
+  .kpi {
+    flex: 1; background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 4px 6px; text-align: center;
+  }
+  .kpi-val {
+    font-family: 'Syne', sans-serif; font-weight: 900;
+    font-size: 14px; color: var(--green);
+  }
+  .kpi-label {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 6px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  /* ── Timeline ── */
+  .timeline { display: flex; flex-direction: column; gap: 4px; }
+  .tl-item {
+    display: flex; gap: 7px; align-items: flex-start;
+  }
+  .tl-marker {
+    display: flex; flex-direction: column; align-items: center; flex-shrink: 0;
+  }
+  .tl-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--amber); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 6px; font-weight: 700; color: #000;
+  }
+  .tl-line {
+    width: 1px; flex: 1; background: rgba(245,158,11,0.25); min-height: 10px;
+  }
+  .tl-content { flex: 1; }
+  .tl-phase {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 7px; color: var(--amber);
+    text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;
+  }
+  .tl-desc {
+    font-size: 7.5px; color: rgba(255,255,255,0.65); line-height: 1.4;
+    margin-top: 1px;
+  }
+
+  /* ── Full-width wide card ── */
+  .wide-card {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(245,158,11,0.08) 0%, rgba(56,189,248,0.05) 100%);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 10px;
+    padding: 5mm 7mm;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5mm;
+  }
+  .wide-col-title {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 10px; text-transform: uppercase;
+    color: var(--amber-lt); margin-bottom: 5px;
+  }
+
+  /* ── P2 footer ── */
+  .p2-footer {
+    padding: 4mm 12mm;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-shrink: 0;
+  }
+  .p2-footer-cta {
+    font-family: 'Syne', sans-serif; font-weight: 900;
+    font-size: 11px; color: var(--amber-lt);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .p2-footer-url {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 8px; color: var(--muted);
+  }
+  .p2-footer-url span { color: var(--amber); font-weight: 700; }
+
+  @media print {
+    html, body { background: #000; }
+    .page { page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════
+      PAGE 1: THE REDESIGN SHOWCASE
+══════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="glow-tl"></div>
+  <div class="glow-br"></div>
+  <div class="mesh-bg"></div>
+
+  <!-- Header -->
+  <div class="p1-header">
+    <div class="brand-badge">
+      <div class="brand-mark">AWM</div>
+      <div>
+        <div class="brand-title">Always Want More</div>
+        <div class="brand-sub">London Luxury Streetwear — Digital Redesign Proposal</div>
+      </div>
+    </div>
+    <div class="doc-meta">
+      <div>Prepared for: <strong style="color:#fff">Always Want More Ltd.</strong></div>
+      <div>Date: November 2026</div>
+      <div>Live Preview: <span class="live-url">awm-store.vercel.app</span></div>
+      <div style="margin-top:5px"><span class="pill pill-amber">◉ SITE LIVE ON VERCEL</span></div>
+    </div>
+  </div>
+
+  <!-- Hero strip -->
+  <div class="p1-hero">
+    <div class="p1-hero-eyebrow">◈ Full Digital Redesign &amp; Platform Upgrade</div>
+    <div class="p1-hero-title">
+      A SITE BUILT TO<br/>
+      <span class="accent">CONVERT. RANK. DOMINATE.</span>
+    </div>
+    <div class="p1-hero-sub">
+      We rebuilt alwayswantmore.co.uk from the ground up — replacing the off-the-shelf Shopify template with a bespoke, high-performance React storefront engineered for conversion, brand prestige, and search dominance. Here is what was delivered.
+    </div>
+  </div>
+
+  <!-- Body grid -->
+  <div class="p1-body">
+
+    <!-- Card: Before vs After -->
+    <div class="card card-amber-accent">
+      <div class="card-subtitle">Platform Comparison</div>
+      <div class="card-title">Before &amp; After</div>
+      <div class="ba-strip">
+        <div class="ba-side ba-before">
+          <div class="ba-label">❌ Old Shopify Theme</div>
+          <div class="ba-item">Generic Dawn template, zero brand differentiation</div>
+          <div class="ba-item">No motion, no UX interactions</div>
+          <div class="ba-item">Static product cards, no quick-view</div>
+          <div class="ba-item">No size guide or fit logic</div>
+          <div class="ba-item">No editorial / lookbook content</div>
+          <div class="ba-item">Basic cart, no upsell mechanics</div>
+          <div class="ba-item">No VIP drop capture flow</div>
+          <div class="ba-item">Poor Core Web Vitals performance</div>
+        </div>
+        <div class="ba-side ba-after">
+          <div class="ba-label">✓ New Bespoke Platform</div>
+          <div class="ba-item">Custom brand-identity design system</div>
+          <div class="ba-item">30+ Framer Motion animation systems</div>
+          <div class="ba-item">3D tilt cards, hover crossfade, quick-view modal</div>
+          <div class="ba-item">AI Fit Lab™ — intelligent size calculator</div>
+          <div class="ba-item">SS26 Lookbook editorial with parallax layers</div>
+          <div class="ba-item">Cart with free-shipping progress bar</div>
+          <div class="ba-item">VIP Drop early-access email/SMS capture</div>
+          <div class="ba-item">Vite build, sub-3s load, Vercel edge CDN</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card: New Features -->
+    <div class="card">
+      <div class="card-subtitle">Exclusive Feature Set</div>
+      <div class="card-title">New Platform Capabilities</div>
+      <ul class="feat-list">
+        <li><strong>AWM AI Fit Lab™</strong> — height/weight/style sliders compute optimal size with 98.4% confidence branding, reducing returns</li>
+        <li><strong>Kinetic Hero</strong> — parallax scroll layers, spring-physics cursor glow, word-blur title reveal and stat counters on first-view</li>
+        <li><strong>Magnetic Buttons</strong> — CTAs spring-snap toward cursor, animated sheen on hover</li>
+        <li><strong>SS26 Lookbook</strong> — directional slide transitions, accent colour per look, parallax background scale on scroll</li>
+        <li><strong>Quick View + Spec Modal</strong> — full product spec sheet, gallery carousel, Klarna/Apple Pay trust badges</li>
+        <li><strong>VIP Drop Tracker</strong> — mobile/email capture with confetti micro-interaction confirmation</li>
+        <li><strong>Animated Gradient Border</strong> — conic CSS @property animation on featured product hero card</li>
+        <li><strong>Scroll Progress Bar</strong> + stagger product grid entrance + live cart quantity management</li>
+      </ul>
+    </div>
+
+    <!-- Card: Tech Stack -->
+    <div class="card">
+      <div class="card-subtitle">Engineering Stack</div>
+      <div class="card-title">Technology &amp; Infrastructure</div>
+      <ul class="feat-list" style="margin-bottom:6px">
+        <li><strong>React 19 + TypeScript</strong> — zero runtime errors, fully typed component system</li>
+        <li><strong>Vite 6 build pipeline</strong> — 433KB bundle, 133KB gzip. 3.08s production build</li>
+        <li><strong>Tailwind CSS v4</strong> — utility-first, purged CSS, 61KB stylesheet</li>
+        <li><strong>Framer Motion 12</strong> — spring physics engine powering all interactions</li>
+        <li><strong>Vercel Edge CDN</strong> — deployed globally, sub-100ms TTFB from UK/EU</li>
+        <li><strong>GitHub CI/CD</strong> — every push to main auto-deploys in ~16 seconds</li>
+      </ul>
+      <div class="tag-row">
+        <span class="tag amber-tag">React 19</span>
+        <span class="tag amber-tag">TypeScript</span>
+        <span class="tag amber-tag">Vite 6</span>
+        <span class="tag amber-tag">Framer Motion 12</span>
+        <span class="tag">Tailwind v4</span>
+        <span class="tag">Vercel CDN</span>
+        <span class="tag">Canvas Confetti</span>
+        <span class="tag">Lucide Icons</span>
+      </div>
+    </div>
+
+    <!-- Card: Conversion Mechanics -->
+    <div class="card card-amber-accent">
+      <div class="card-subtitle">Revenue Impact</div>
+      <div class="card-title">Conversion-First Design</div>
+      <ul class="feat-list" style="margin-bottom:6px">
+        <li>Free shipping threshold bar — proven to increase AOV by 15–30%</li>
+        <li>Size recommendation AI — reduces return rate &amp; builds purchase confidence</li>
+        <li>VIP drop capture — builds owned marketing list outside Shopify dependency</li>
+        <li>Wishlist system — re-engagement trigger for abandoned sessions</li>
+        <li>Particle confetti on checkout — reinforces purchase decision emotionally</li>
+        <li>Verified review blocks with star animation — lifts trust and dwell time</li>
+      </ul>
+      <div class="metric-grid">
+        <div class="metric-cell">
+          <div class="metric-val">+30%</div>
+          <div class="metric-label">Expected AOV Lift</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-val">-25%</div>
+          <div class="metric-label">Return Rate Target</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-val">&lt;1.5s</div>
+          <div class="metric-label">Time to First Paint</div>
+        </div>
+        <div class="metric-cell">
+          <div class="metric-val">16s</div>
+          <div class="metric-label">Auto-Deploy Time</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /p1-body -->
+
+  <!-- Footer stat bar -->
+  <div class="p1-footer-bar">
+    <div class="footer-stat">
+      <span class="num">2004</span>
+      <span class="lbl">Modules Bundled</span>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-stat">
+      <span class="num">30+</span>
+      <span class="lbl">Animation Systems</span>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-stat">
+      <span class="num">16s</span>
+      <span class="lbl">CI/CD Deploy Time</span>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-stat">
+      <span class="num">∞</span>
+      <span class="lbl">Auto-Redeploys on Push</span>
+    </div>
+  </div>
+
+</div><!-- /page 1 -->
+
+
+<!-- ══════════════════════════════════════════════════════
+      PAGE 2: SEO & AI SEARCH STRATEGY
+══════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="glow-tr"></div>
+  <div class="glow-br" style="background: radial-gradient(circle, rgba(129,140,248,0.1) 0%, transparent 70%)"></div>
+  <div class="mesh-bg"></div>
+
+  <!-- Header -->
+  <div class="p2-header">
+    <div>
+      <div class="p2-eyebrow">◈ Search Domination Roadmap — Google + AI Engines</div>
+      <div class="p2-title">
+        RANK #1 ON GOOGLE.<br/>
+        <span class="blue-accent">OWN AI SEARCH.</span>
+      </div>
+      <div class="p2-sub">
+        Modern search is dual-channel: traditional Google SERPs and AI-powered answer engines (ChatGPT, Perplexity, Google SGE). AWM must win both. This roadmap covers every technical, content, and authority lever to rank top-3 for UK streetwear searches and appear inside AI-generated answers.
+      </div>
+    </div>
+    <div style="text-align:right; display:flex; flex-direction:column; gap:5px; align-items:flex-end; flex-shrink:0; margin-left:8mm">
+      <span class="pill pill-blue">AI-First SEO</span>
+      <span class="pill pill-amber">Google E-E-A-T</span>
+      <span class="pill pill-green">Core Web Vitals</span>
+      <span class="pill pill-white">Schema Markup</span>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="p2-body">
+
+    <!-- Col 1: Technical SEO -->
+    <div class="pillar">
+      <div class="pillar-num">01</div>
+      <div class="pillar-eyebrow amber">🔧 Pillar 1</div>
+      <div class="pillar-title">Technical SEO Foundation</div>
+      <ul class="feat-list">
+        <li><strong>Core Web Vitals</strong> — Vite build already delivers sub-1.5s LCP. We add image lazy loading, next-gen WebP formats, and preconnect hints for Google Fonts CDN</li>
+        <li><strong>Structured Data / Schema</strong> — Product schema (name, price, availability, reviews), BreadcrumbList, and Organization schema injected into every page for Google rich results &amp; AI knowledge graphs</li>
+        <li><strong>Canonical &amp; hreflang tags</strong> — Proper canonicals prevent duplicate content penalties across collection filter URLs</li>
+        <li><strong>XML Sitemap + robots.txt</strong> — Automated sitemap generation, crawl priority weighting on collection pages over filtered URLs</li>
+        <li><strong>Open Graph + Twitter Card meta</strong> — Every product page has rich OG image, title, and description for social sharing and AI scrapers</li>
+        <li><strong>Mobile-first + 100% responsive</strong> — Google's index is mobile-first; this build passes all responsive breakpoints</li>
+      </ul>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-val">&lt;1.5s</div><div class="kpi-label">LCP Target</div></div>
+        <div class="kpi"><div class="kpi-val">100</div><div class="kpi-label">PageSpeed Score</div></div>
+        <div class="kpi"><div class="kpi-val">0ms</div><div class="kpi-label">CLS Target</div></div>
+      </div>
+    </div>
+
+    <!-- Col 2: Content SEO -->
+    <div class="pillar">
+      <div class="pillar-num">02</div>
+      <div class="pillar-eyebrow" style="color:var(--blue)">✍️ Pillar 2</div>
+      <div class="pillar-title">Content &amp; Keyword Strategy</div>
+      <ul class="feat-list">
+        <li><strong>Primary targets</strong> — "UK streetwear brand", "tracksuits London", "heavyweight hoodies UK", "luxury tracksuit set UK", "AWM clothing" — all have buyer intent</li>
+        <li><strong>Collection page copy</strong> — Each collection gets 150-word keyword-rich intros: GSM ratings, fabric specs, and style notes that Google reads as E-E-A-T signals</li>
+        <li><strong>Long-tail product descriptions</strong> — We already wrote specification-rich descriptions (GSM ratings, construction, temperature ratings) — Google rewards depth</li>
+        <li><strong>Blog / Drop Journal</strong> — Monthly editorial drops ("Behind the Chenille Puffer", "SS26 Design Notes") target informational queries and build topical authority</li>
+        <li><strong>FAQ schema on PDPs</strong> — "What GSM is AWM?" / "Does AWM ship next day?" answers appear in Google's People Also Ask and AI answer boxes</li>
+        <li><strong>Alt text &amp; filename SEO</strong> — All product images named and alt-tagged with keyword-rich descriptions for Google Image search traffic</li>
+      </ul>
+      <div class="kpi-row">
+        <div class="kpi"><div class="kpi-val" style="color:var(--blue)">40+</div><div class="kpi-label">Target Keywords</div></div>
+        <div class="kpi"><div class="kpi-val" style="color:var(--blue)">3mo</div><div class="kpi-label">To Page 1 Est.</div></div>
+      </div>
+    </div>
+
+    <!-- Col 1: Authority & Links -->
+    <div class="pillar">
+      <div class="pillar-num">03</div>
+      <div class="pillar-eyebrow" style="color:var(--green)">🔗 Pillar 3</div>
+      <div class="pillar-title">Authority &amp; Link Building</div>
+      <ul class="feat-list">
+        <li><strong>Google Business Profile</strong> — Fully optimised listing with product photos, posts, and Q&amp;A to capture local/branded searches</li>
+        <li><strong>Press &amp; streetwear media</strong> — Outreach to Hypebeast UK, Highsnobiety, GRM Daily, GUAP Magazine for brand coverage = high-authority backlinks</li>
+        <li><strong>Influencer product seeding</strong> — UK streetwear creators wearing AWM generate natural backlinks from Instagram link-in-bio and TikTok descriptions</li>
+        <li><strong>Review aggregator listings</strong> — Trustpilot and Google Reviews integration feeds E-E-A-T (Experience, Expertise, Authoritativeness, Trust) signals directly cited by Google's quality raters</li>
+        <li><strong>Internal linking architecture</strong> — Lookbook → Collection → PDP linking passes PageRank through the site's key revenue pages</li>
+      </ul>
+    </div>
+
+    <!-- Col 2: AI Search Optimisation -->
+    <div class="pillar" style="border-color: rgba(56,189,248,0.3)">
+      <div class="pillar-num">04</div>
+      <div class="pillar-eyebrow" style="color:var(--blue)">🤖 Pillar 4 — The New Frontier</div>
+      <div class="pillar-title">AI Search Optimisation (AIO)</div>
+      <ul class="feat-list">
+        <li><strong>Google SGE / AI Overviews</strong> — Structured product data, FAQ schema, and concise specification copy are the exact signals Google's generative AI cites in answer boxes. AWM's spec-rich descriptions are already optimised</li>
+        <li><strong>ChatGPT &amp; Perplexity</strong> — These engines crawl and cite pages with clear entity structure. Brand mentions in press + schema markup = AWM appears when users ask "best UK streetwear brands" or "quality tracksuits UK"</li>
+        <li><strong>Llama / Bing Copilot</strong> — Bing indexes alwayswantmore.co.uk; Product schema triggers Bing Shopping integration, making AWM appear in AI-generated shopping suggestions</li>
+        <li><strong>Entity-based SEO</strong> — Building AWM as a recognisable entity in Google's Knowledge Graph: Wikipedia-style "About" page, Wikidata entity submission, consistent NAP (Name/Address/Phone) across all directories</li>
+        <li><strong>Conversational query targeting</strong> — Optimising for natural language: "where to buy heavyweight tracksuits in the UK", "is AWM a good brand" — these appear verbatim in Perplexity and ChatGPT queries</li>
+      </ul>
+    </div>
+
+    <!-- Full-width timeline -->
+    <div class="wide-card">
+      <div>
+        <div class="wide-col-title">📅 Month 1–2: Foundation</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-marker"><div class="tl-dot">1</div><div class="tl-line"></div></div>
+            <div class="tl-content"><div class="tl-phase">Technical Audit</div><div class="tl-desc">Schema injection, sitemap, robots.txt, Core Web Vitals baseline, GA4 + Search Console setup</div></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-marker"><div class="tl-dot">2</div><div class="tl-line"></div></div>
+            <div class="tl-content"><div class="tl-phase">On-Page Optimisation</div><div class="tl-desc">Collection page copy, PDP metadata, alt text, FAQ schema on all product pages</div></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-marker"><div class="tl-dot">3</div></div>
+            <div class="tl-content"><div class="tl-phase">Google Business + Reviews</div><div class="tl-desc">GMB profile optimised, Trustpilot setup, E-E-A-T content assets published</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="wide-col-title">📅 Month 3–4: Content Velocity</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-marker"><div class="tl-dot">4</div><div class="tl-line"></div></div>
+            <div class="tl-content"><div class="tl-phase">Drop Journal Launch</div><div class="tl-desc">4× blog articles targeting informational keywords; internal linking to collection pages</div></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-marker"><div class="tl-dot">5</div><div class="tl-line"></div></div>
+            <div class="tl-content"><div class="tl-phase">Link Outreach</div><div class="tl-desc">Media pitching to UK streetwear press, influencer seeding for natural backlink generation</div></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-marker"><div class="tl-dot">6</div></div>
+            <div class="tl-content"><div class="tl-phase">AI Entity Building</div><div class="tl-desc">Wikidata entity, Crunchbase listing, structured brand mentions across high-DA directories</div></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="wide-col-title">📅 Month 5–6: Domination</div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-marker"><div class="tl-dot">7</div><div class="tl-line"></div></div>
+            <div class="tl-content"><div class="tl-phase">Page 1 Rankings</div><div class="tl-desc">Target 10+ primary keywords on page 1 for UK streetwear, tracksuits, hoodies searches</div></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-marker"><div class="tl-dot">8</div><div class="tl-line"></div></div>
+            <div class="tl-content"><div class="tl-phase">AI Answer Integration</div><div class="tl-desc">AWM cited in ChatGPT/Perplexity answers for UK streetwear queries; SGE product carousels active</div></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-marker"><div class="tl-dot">✓</div></div>
+            <div class="tl-content"><div class="tl-phase">Monthly Reporting</div><div class="tl-desc">GA4 dashboard, Search Console ranking reports, AI mention tracking delivered monthly</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /p2-body -->
+
+  <!-- P2 Footer -->
+  <div class="p2-footer">
+    <div>
+      <div class="p2-footer-cta">Ready to dominate UK streetwear search.</div>
+      <div class="p2-footer-url">Live now: <span>awm-store.vercel.app</span> &nbsp;|&nbsp; Repo: <span>github.com/bdmanagementgroup-max/awm-always-want-more</span></div>
+    </div>
+    <div style="display:flex; gap:5px; align-items:center">
+      <span class="pill pill-amber">Page 2 / 2</span>
+      <span class="pill pill-green">◉ SITE LIVE</span>
+    </div>
+  </div>
+
+</div><!-- /page 2 -->
+
+</body>
+</html>

@@ -30,6 +30,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const scale   = useSpring(1, { stiffness: 250, damping: 22 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
     const el = e.currentTarget;
     const rect = el.getBoundingClientRect();
     const nx = (e.clientX - rect.left) / rect.width - 0.5;
@@ -52,10 +53,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40, filter: 'blur(8px)' }}
+      initial={{ opacity: 0, y: 30, filter: 'blur(6px)' }}
       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.6, delay: index * 0.07, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: '-20px' }}
+      transition={{ duration: 0.5, delay: Math.min(index * 0.05, 0.3), ease: 'easeOut' }}
       style={{ rotateX, rotateY, scale, transformStyle: 'preserve-3d' }}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
@@ -65,7 +66,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       {/* ── Image Container ── */}
       <div
         onClick={() => onQuickView(product)}
-        className="relative h-80 sm:h-96 w-full overflow-hidden bg-zinc-900"
+        className="relative h-72 xs:h-80 sm:h-96 w-full overflow-hidden bg-zinc-900"
       >
         {/* Hover-swap image with crossfade */}
         <AnimatePresence mode="wait">
@@ -90,13 +91,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
         {/* Badge */}
         {product.badge && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.07 + 0.3, type: 'spring', stiffness: 400, damping: 22 }}
-            className="absolute top-3 left-3"
-          >
-            <span className={`text-[9px] font-mono-tech font-bold uppercase tracking-widest px-2.5 py-1 rounded-full backdrop-blur-md border ${
+          <div className="absolute top-2.5 sm:top-3 left-2.5 sm:left-3">
+            <span className={`text-[8px] sm:text-[9px] font-mono-tech font-bold uppercase tracking-widest px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full backdrop-blur-md border ${
               product.badge === 'EXCLUSIVE'
                 ? 'bg-amber-500/20 text-amber-300 border-amber-400/40'
                 : product.badge === 'BESTSELLER'
@@ -105,14 +101,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             }`}>
               {product.badge}
             </span>
-          </motion.div>
+          </div>
         )}
 
         {/* Wishlist — spring pop */}
-        <motion.button
-          whileTap={{ scale: 0.8 }}
+        <button
           onClick={(e) => { e.stopPropagation(); onToggleWishlist(product); }}
-          className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md border transition-colors ${
+          className={`absolute top-2.5 sm:top-3 right-2.5 sm:right-3 p-2 rounded-full backdrop-blur-md border transition-colors active:scale-90 ${
             isWishlisted
               ? 'bg-rose-500 text-white border-rose-400'
               : 'bg-black/50 text-zinc-300 border-white/10 hover:text-white hover:bg-black/80'
@@ -123,18 +118,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             animate={isWishlisted ? { scale: [1, 1.4, 1] } : {}}
             transition={{ type: 'spring', stiffness: 500, damping: 15 }}
           >
-            <Heart size={16} fill={isWishlisted ? 'currentColor' : 'none'} />
+            <Heart size={15} fill={isWishlisted ? 'currentColor' : 'none'} />
           </motion.div>
-        </motion.button>
+        </button>
 
-        {/* Quick view overlay — slides up from bottom */}
-        <motion.div
-          initial={{ y: '100%', opacity: 0 }}
-          animate={{ y: isHovered ? '0%' : '100%', opacity: isHovered ? 1 : 0 }}
-          transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-          className="absolute inset-x-3 bottom-3 pointer-events-none"
-          style={{ pointerEvents: isHovered ? 'auto' : 'none' }}
-        >
+        {/* Quick view overlay — visible on hover (desktop) or tap (mobile) */}
+        <div className="hidden sm:block absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">
           <button
             onClick={(e) => { e.stopPropagation(); onQuickView(product); }}
             className="w-full py-2.5 px-4 rounded-xl bg-white text-black font-mono-tech text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-2xl hover:bg-amber-400 transition-colors"
@@ -142,89 +131,74 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <Eye size={14} />
             <span>QUICK VIEW & SPECS</span>
           </button>
-        </motion.div>
+        </div>
       </div>
 
       {/* ── Info Panel ── */}
-      <div className="p-5 flex flex-col flex-1 justify-between gap-4">
+      <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between gap-3 sm:gap-4">
         <div>
-          <div className="flex items-center justify-between text-xs text-zinc-400 font-mono-tech mb-1">
+          <div className="flex items-center justify-between text-[11px] sm:text-xs text-zinc-400 font-mono-tech mb-1">
             <span>{product.tag || 'AWM DROP'}</span>
-            {/* Color swatches with hover expand */}
+            {/* Color swatches */}
             <div className="flex gap-1.5 items-center">
               {product.colors.map((c, i) => (
-                <motion.span
+                <span
                   key={i}
-                  whileHover={{ scale: 1.5 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 15 }}
-                  className="w-2.5 h-2.5 rounded-full border border-white/30 cursor-pointer"
+                  className="w-2.5 h-2.5 rounded-full border border-white/30"
                   style={{ backgroundColor: c }}
                 />
               ))}
             </div>
           </div>
 
-          <motion.h3
+          <h3
             onClick={() => onQuickView(product)}
-            className="font-syne font-bold text-sm text-white line-clamp-1 cursor-pointer"
-            animate={{ color: isHovered ? '#fbbf24' : '#fff' }}
-            transition={{ duration: 0.25 }}
+            className="font-syne font-bold text-xs sm:text-sm text-white line-clamp-1 cursor-pointer group-hover:text-amber-400 transition-colors"
           >
             {product.title}
-          </motion.h3>
+          </h3>
 
-          <motion.div
-            className="mt-2 font-syne font-black text-lg text-white"
-            animate={{ scale: isHovered ? 1.03 : 1 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-          >
+          <div className="mt-1.5 font-syne font-black text-base sm:text-lg text-white">
             {product.price}
-          </motion.div>
+          </div>
         </div>
 
         {/* ── Size + Add to Bag ── */}
-        <div className="space-y-3 pt-3 border-t border-white/10">
+        <div className="space-y-2.5 pt-2.5 border-t border-white/10">
           <div className="flex items-center justify-between">
             <span className="text-[10px] uppercase font-mono-tech text-zinc-400">Select Size:</span>
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1 sm:gap-1.5">
               {product.sizes.map((s) => (
-                <motion.button
+                <button
                   key={s}
                   onClick={(e) => { e.stopPropagation(); setSelectedSize(s); }}
-                  whileTap={{ scale: 0.85 }}
-                  animate={{
-                    backgroundColor: selectedSize === s ? '#fbbf24' : '#27272a',
-                    color: selectedSize === s ? '#000' : '#d4d4d8',
-                    scale: selectedSize === s ? 1.1 : 1,
-                  }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                  className="w-6 h-6 rounded-md text-[10px] font-mono-tech font-bold uppercase"
+                  className={`w-7 h-7 sm:w-6 sm:h-6 rounded-md text-[10px] font-mono-tech font-bold uppercase transition-all flex items-center justify-center active:scale-90 ${
+                    selectedSize === s
+                      ? 'bg-amber-400 text-black shadow-sm font-black'
+                      : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
+                  }`}
                 >
                   {s}
-                </motion.button>
+                </button>
               ))}
             </div>
           </div>
 
-          <motion.button
+          <button
             onClick={handleQuickAdd}
             disabled={addedAnimation}
-            whileTap={{ scale: 0.96 }}
-            animate={{
-              backgroundColor: addedAnimation ? '#22c55e' : '#27272a',
-              color: addedAnimation ? '#000' : '#f4f4f5',
-            }}
-            whileHover={addedAnimation ? {} : { backgroundColor: '#fbbf24', color: '#000' }}
-            className="w-full py-2.5 rounded-xl text-xs font-mono-tech font-bold tracking-wider uppercase flex items-center justify-center gap-2 cursor-pointer border border-white/10"
+            className={`w-full py-3 sm:py-2.5 rounded-xl text-xs font-mono-tech font-bold tracking-wider uppercase flex items-center justify-center gap-2 cursor-pointer border border-white/10 active:scale-98 transition-all ${
+              addedAnimation ? 'bg-emerald-500 text-black' : 'bg-zinc-800 hover:bg-amber-400 hover:text-black text-zinc-100'
+            }`}
           >
             <AnimatePresence mode="wait">
               {addedAnimation ? (
                 <motion.span
                   key="added"
-                  initial={{ opacity: 0, y: 8 }}
+                  initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  className="flex items-center gap-2"
+                  exit={{ opacity: 0, y: -6 }}
+                  className="flex items-center gap-1.5"
                 >
                   <Check size={14} className="stroke-[3]" />
                   ADDED TO BAG
@@ -232,17 +206,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               ) : (
                 <motion.span
                   key="add"
-                  initial={{ opacity: 0, y: 8 }}
+                  initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  className="flex items-center gap-2"
+                  exit={{ opacity: 0, y: -6 }}
+                  className="flex items-center gap-1.5"
                 >
                   <ShoppingBag size={14} />
                   ADD • SIZE {selectedSize}
                 </motion.span>
               )}
             </AnimatePresence>
-          </motion.button>
+          </button>
         </div>
       </div>
     </motion.div>

@@ -50,33 +50,33 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="relative w-full max-w-md bg-[#0a0a0e] border-l border-white/10 h-full shadow-2xl flex flex-col z-10"
+            className="relative w-full max-w-md bg-[#0a0a0e] border-l border-white/10 h-[100dvh] shadow-2xl flex flex-col z-10"
           >
             {/* Header */}
-            <div className="p-6 border-b border-white/10 flex items-center justify-between">
-              <div className="flex items-center gap-3">
+            <div className="p-4 sm:p-6 border-b border-white/10 flex items-center justify-between">
+              <div className="flex items-center gap-2.5 sm:gap-3">
                 <ShoppingBag className="text-amber-400" size={20} />
-                <h2 className="font-syne font-black text-xl text-white">YOUR BAG</h2>
-                <span className="text-xs font-mono-tech px-2 py-0.5 rounded-full bg-white/10 text-zinc-300">
+                <h2 className="font-syne font-black text-lg sm:text-xl text-white">YOUR BAG</h2>
+                <span className="text-[11px] sm:text-xs font-mono-tech px-2 py-0.5 rounded-full bg-white/10 text-zinc-300">
                   {items.reduce((acc, i) => acc + i.quantity, 0)} ITEMS
                 </span>
               </div>
               <button
                 onClick={onClose}
-                className="p-2 rounded-full hover:bg-white/10 text-zinc-400 hover:text-white transition-colors"
+                className="p-2 rounded-full hover:bg-white/10 text-zinc-400 hover:text-white transition-colors active:scale-90"
                 aria-label="Close cart"
               >
-                <X size={18} />
+                <X size={20} />
               </button>
             </div>
 
             {/* Free shipping bar */}
-            <div className="bg-zinc-900/60 p-4 border-b border-white/5 space-y-2">
-              <div className="flex justify-between text-xs font-mono-tech">
+            <div className="bg-zinc-900/60 p-3 sm:p-4 border-b border-white/5 space-y-1.5 sm:space-y-2">
+              <div className="flex justify-between text-[11px] sm:text-xs font-mono-tech">
                 <span className="text-zinc-300">
                   {remaining <= 0
                     ? '🎉 FREE UK NEXT-DAY SHIPPING UNLOCKED!'
-                    : `Add £${remaining.toFixed(2)} more for FREE UK Next-Day Delivery`}
+                    : `Add £${remaining.toFixed(2)} for FREE UK Delivery`}
                 </span>
                 <span className="text-amber-400 font-bold">{Math.round(progress)}%</span>
               </div>
@@ -91,7 +91,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             </div>
 
             {/* Items list */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-3 sm:space-y-4">
               {items.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
                   <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-zinc-500">
@@ -170,8 +170,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
             {/* Footer / Checkout */}
             {items.length > 0 && (
-              <div className="p-6 border-t border-white/10 bg-zinc-950/80 space-y-4">
-                <div className="space-y-2 text-xs font-mono-tech">
+              <div className="p-4 sm:p-6 pb-8 sm:pb-6 border-t border-white/10 bg-zinc-950/90 space-y-3 sm:space-y-4 shrink-0">
+                <div className="space-y-1.5 sm:space-y-2 text-xs font-mono-tech">
                   <div className="flex justify-between text-zinc-400">
                     <span>Subtotal</span>
                     <span className="text-white font-bold">£{subtotal.toFixed(2)}</span>
@@ -182,7 +182,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                       {remaining <= 0 ? 'FREE' : '£4.99'}
                     </span>
                   </div>
-                  <div className="border-t border-white/10 pt-2 flex justify-between text-base font-syne font-black text-white">
+                  <div className="border-t border-white/10 pt-2 flex justify-between text-sm sm:text-base font-syne font-black text-white">
                     <span>ESTIMATED TOTAL</span>
                     <span className="text-amber-400">
                       £{(subtotal + (remaining <= 0 ? 0 : 4.99)).toFixed(2)}
@@ -192,14 +192,14 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
                 <button
                   onClick={onCheckout}
-                  className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-black font-syne font-black text-sm tracking-wider uppercase flex items-center justify-center gap-2 shadow-xl shadow-amber-500/20 cursor-pointer"
+                  className="w-full py-3.5 sm:py-4 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-black font-syne font-black text-xs sm:text-sm tracking-wider uppercase flex items-center justify-center gap-2 shadow-xl shadow-amber-500/20 active:scale-98 transition-all cursor-pointer"
                 >
                   <span>SECURE CHECKOUT</span>
-                  <ArrowRight size={18} />
+                  <ArrowRight size={17} />
                 </button>
 
-                <div className="flex items-center justify-center gap-2 text-[10px] text-zinc-400 font-mono-tech">
-                  <ShieldCheck size={14} className="text-emerald-400" />
+                <div className="flex items-center justify-center gap-1.5 text-[9px] sm:text-[10px] text-zinc-400 font-mono-tech text-center">
+                  <ShieldCheck size={13} className="text-emerald-400 shrink-0" />
                   <span>256-Bit Encrypted Checkout • Klarna & Apple Pay</span>
                 </div>
               </div>

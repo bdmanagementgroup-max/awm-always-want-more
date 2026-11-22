@@ -1,27 +1,34 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, useSpring, useMotionValue, useTransform } from 'framer-motion';
 
-/** Silky cursor-glow that tracks the mouse with spring physics */
+/** Silky cursor-glow that tracks the mouse with spring physics - hidden on touch/mobile */
 export const CursorGlow: React.FC = () => {
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
+  const [isPointerDevice, setIsPointerDevice] = React.useState(false);
+  const rawX = useMotionValue(-500);
+  const rawY = useMotionValue(-500);
 
   const x = useSpring(rawX, { stiffness: 80, damping: 18 });
   const y = useSpring(rawY, { stiffness: 80, damping: 18 });
 
   useEffect(() => {
-    const move = (e: MouseEvent) => {
-      rawX.set(e.clientX);
-      rawY.set(e.clientY);
-    };
-    window.addEventListener('mousemove', move);
-    return () => window.removeEventListener('mousemove', move);
+    // Only enable on devices with fine pointer (mouse/trackpad), not touchscreen
+    if (window.matchMedia('(pointer: fine)').matches) {
+      setIsPointerDevice(true);
+      const move = (e: MouseEvent) => {
+        rawX.set(e.clientX);
+        rawY.set(e.clientY);
+      };
+      window.addEventListener('mousemove', move, { passive: true });
+      return () => window.removeEventListener('mousemove', move);
+    }
   }, [rawX, rawY]);
+
+  if (!isPointerDevice) return null;
 
   return (
     <motion.div
       style={{ left: x, top: y }}
-      className="fixed z-[998] pointer-events-none w-[380px] h-[380px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+      className="fixed z-[998] pointer-events-none w-[380px] h-[380px] -translate-x-1/2 -translate-y-1/2 rounded-full hidden md:block"
       aria-hidden="true"
     >
       {/* Inner amber glow core */}
@@ -123,7 +130,7 @@ export const StaggerItem: React.FC<{
   </motion.div>
 );
 
-/** Magnetic button — children snap toward cursor on hover */
+/** Magnetic button — children snap toward cursor on hover (mouse only) */
 export const MagneticButton: React.FC<{
   children: React.ReactNode;
   className?: string;
@@ -136,6 +143,7 @@ export const MagneticButton: React.FC<{
   const y = useSpring(0, { stiffness: 300, damping: 20 });
 
   const onMouseMove = (e: React.MouseEvent) => {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
