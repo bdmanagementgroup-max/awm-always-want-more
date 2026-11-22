@@ -31,8 +31,8 @@ export const CursorGlow: React.FC = () => {
       className="fixed z-[998] pointer-events-none w-[380px] h-[380px] -translate-x-1/2 -translate-y-1/2 rounded-full hidden md:block"
       aria-hidden="true"
     >
-      {/* Inner amber glow core */}
-      <div className="absolute inset-0 rounded-full bg-gradient-radial from-amber-500/8 via-amber-500/3 to-transparent" />
+      {/* Inner teal and pink glow core */}
+      <div className="absolute inset-0 rounded-full bg-gradient-radial from-teal-500/10 via-pink-500/5 to-transparent" />
     </motion.div>
   );
 };

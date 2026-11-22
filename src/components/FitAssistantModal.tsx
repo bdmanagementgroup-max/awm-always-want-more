@@ -62,26 +62,26 @@ export const FitAssistantModal: React.FC<FitAssistantModalProps> = ({
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-lg glass-panel bg-[#0d0d12] rounded-3xl border border-amber-500/30 shadow-2xl p-6 sm:p-8 z-10 overflow-hidden"
+            className="relative w-full max-w-lg glass-panel bg-white rounded-3xl border border-teal-200 shadow-2xl p-6 sm:p-8 z-10 overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between pb-4 border-b border-white/10">
+            <div className="flex items-center justify-between pb-4 border-b border-zinc-200">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-amber-400/20 text-amber-300">
-                  <Sparkles size={20} />
+                <div className="p-2.5 rounded-xl bg-teal-50 text-teal-700 border border-teal-200">
+                  <Sparkles size={20} className="text-pink-500" />
                 </div>
                 <div>
-                  <h3 className="font-syne font-black text-lg text-white">
+                  <h3 className="font-syne font-black text-lg text-zinc-950">
                     AWM AI FIT LAB™
                   </h3>
-                  <p className="text-xs text-zinc-400 font-mono-tech">
+                  <p className="text-xs text-zinc-500 font-mono-tech">
                     Precision Sizing Algorithm for London Streetwear
                   </p>
                 </div>
               </div>
               <button
                 onClick={onClose}
-                className="p-2 text-zinc-400 hover:text-white rounded-full hover:bg-white/5"
+                className="p-2 text-zinc-400 hover:text-black rounded-full hover:bg-zinc-100"
               >
                 <X size={18} />
               </button>
@@ -92,10 +92,10 @@ export const FitAssistantModal: React.FC<FitAssistantModalProps> = ({
               {/* Height */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs font-mono-tech">
-                  <span className="flex items-center gap-2 text-zinc-300">
-                    <Ruler size={14} className="text-amber-400" /> Height
+                  <span className="flex items-center gap-2 text-zinc-700 font-medium">
+                    <Ruler size={14} className="text-teal-600" /> Height
                   </span>
-                  <span className="text-amber-400 font-bold font-mono-tech">
+                  <span className="text-teal-700 font-bold font-mono-tech">
                     {heightCm} cm ({Math.floor(heightCm / 30.48)}' {Math.round((heightCm % 30.48) / 2.54)}")
                   </span>
                 </div>
@@ -109,17 +109,17 @@ export const FitAssistantModal: React.FC<FitAssistantModalProps> = ({
                     setHeightCm(v);
                     handleUpdate(v, weightKg, fitPreference);
                   }}
-                  className="w-full accent-amber-400 cursor-pointer h-2 bg-zinc-800 rounded-lg"
+                  className="w-full accent-teal-600 cursor-pointer h-2 bg-zinc-200 rounded-lg"
                 />
               </div>
 
               {/* Weight */}
               <div className="space-y-2">
                 <div className="flex justify-between text-xs font-mono-tech">
-                  <span className="flex items-center gap-2 text-zinc-300">
-                    <Weight size={14} className="text-amber-400" /> Weight
+                  <span className="flex items-center gap-2 text-zinc-700 font-medium">
+                    <Weight size={14} className="text-teal-600" /> Weight
                   </span>
-                  <span className="text-amber-400 font-bold font-mono-tech">
+                  <span className="text-teal-700 font-bold font-mono-tech">
                     {weightKg} kg ({(weightKg * 2.20462).toFixed(0)} lbs)
                   </span>
                 </div>
@@ -133,13 +133,13 @@ export const FitAssistantModal: React.FC<FitAssistantModalProps> = ({
                     setWeightKg(v);
                     handleUpdate(heightCm, v, fitPreference);
                   }}
-                  className="w-full accent-amber-400 cursor-pointer h-2 bg-zinc-800 rounded-lg"
+                  className="w-full accent-teal-600 cursor-pointer h-2 bg-zinc-200 rounded-lg"
                 />
               </div>
 
               {/* Fit Preference */}
               <div className="space-y-2">
-                <span className="text-xs font-mono-tech text-zinc-300 block">
+                <span className="text-xs font-mono-tech text-zinc-700 font-medium block">
                   Desired Fit Silhouette:
                 </span>
                 <div className="grid grid-cols-3 gap-2">
@@ -152,8 +152,8 @@ export const FitAssistantModal: React.FC<FitAssistantModalProps> = ({
                       }}
                       className={`py-2 rounded-xl text-xs font-mono-tech uppercase font-bold transition-all ${
                         fitPreference === pref
-                          ? 'bg-amber-400 text-black shadow-md'
-                          : 'bg-zinc-800 text-zinc-400 hover:text-white'
+                          ? 'bg-teal-600 text-white shadow-xs'
+                          : 'bg-zinc-100 text-zinc-600 hover:text-black hover:bg-zinc-200'
                       }`}
                     >
                       {pref}
@@ -162,17 +162,17 @@ export const FitAssistantModal: React.FC<FitAssistantModalProps> = ({
                 </div>
               </div>
 
-              {/* AI Prediction Box */}
-              <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-500/10 via-zinc-900 to-zinc-950 border border-amber-500/30 flex items-center justify-between">
+              {/* AI Prediction Box: Teal & Pink Accent */}
+              <div className="p-4 rounded-2xl bg-gradient-to-br from-teal-50 via-white to-pink-50 border border-teal-200 flex items-center justify-between shadow-xs">
                 <div>
-                  <div className="text-[10px] font-mono-tech text-amber-300 uppercase tracking-widest">
+                  <div className="text-[10px] font-mono-tech text-teal-800 uppercase tracking-widest font-bold">
                     Recommended Size
                   </div>
-                  <div className="text-xs text-zinc-400 mt-0.5">
+                  <div className="text-xs text-zinc-500 mt-0.5">
                     98.4% Confidence Match for AWM cuts
                   </div>
                 </div>
-                <div className="text-4xl font-syne font-black text-amber-400 bg-amber-400/10 px-4 py-2 rounded-2xl border border-amber-400/30">
+                <div className="text-4xl font-syne font-black text-teal-600 bg-white px-4 py-2 rounded-2xl border border-teal-200 shadow-xs">
                   {recommendedSize}
                 </div>
               </div>
@@ -184,9 +184,9 @@ export const FitAssistantModal: React.FC<FitAssistantModalProps> = ({
                 onApplySize(recommendedSize);
                 onClose();
               }}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-500 text-black font-syne font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20"
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-teal-500 via-teal-600 to-teal-500 hover:from-teal-600 hover:to-teal-700 text-white font-syne font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-teal-500/20 active:scale-98 transition-all"
             >
-              <CheckCircle2 size={18} />
+              <CheckCircle2 size={18} className="text-pink-300" />
               <span>CONFIRM & APPLY SIZE {recommendedSize}</span>
             </button>
           </motion.div>

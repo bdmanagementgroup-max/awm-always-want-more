@@ -93,7 +93,8 @@ export function App() {
     confetti({
       particleCount: 80,
       spread: 90,
-      origin: { y: 0.6 }
+      origin: { y: 0.6 },
+      colors: ['#0d9488', '#14b8a6', '#ec4899', '#f43f5e', '#ffffff']
     });
     setCheckoutNotice('Connecting to Always Want More 256-bit encrypted checkout...');
     setTimeout(() => {
@@ -108,7 +109,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#08080a] text-zinc-100 flex flex-col font-sans selection:bg-amber-400 selection:text-black">
+    <div className="min-h-screen bg-[#fafbfc] text-zinc-900 flex flex-col font-sans selection:bg-teal-400 selection:text-black">
       {/* Global UX primitives */}
       <CursorGlow />
       <ScrollProgressBar />
@@ -120,9 +121,9 @@ export function App() {
             initial={{ opacity: 0, y: -40 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -40 }}
-            className="fixed top-24 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full bg-amber-400 text-black font-mono-tech text-xs font-bold uppercase tracking-wider shadow-2xl flex items-center gap-2"
+            className="fixed top-24 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full bg-teal-600 text-white font-mono-tech text-xs font-bold uppercase tracking-wider shadow-2xl flex items-center gap-2 border border-teal-500/30"
           >
-            <Check size={16} />
+            <Check size={16} className="text-pink-300" />
             <span>{checkoutNotice}</span>
           </motion.div>
         )}
@@ -165,34 +166,34 @@ export function App() {
 
       {/* Main Catalog Section */}
       <section id="products-section" className="py-10 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4 pb-6 sm:pb-8 border-b border-white/10">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4 pb-6 sm:pb-8 border-b border-zinc-200">
           <div>
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-mono-tech text-amber-400 uppercase tracking-widest mb-1">
-              <Flame size={13} />
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-mono-tech text-teal-700 font-bold uppercase tracking-widest mb-1">
+              <Flame size={13} className="text-pink-500" />
               <span>LIVE RELEASES • SS26 CAPSULE</span>
             </div>
-            <h2 className="text-2xl xs:text-3xl sm:text-5xl font-syne font-black text-white uppercase">
+            <h2 className="text-2xl xs:text-3xl sm:text-5xl font-syne font-black text-zinc-950 uppercase">
               {activeCategory === 'all' ? 'THE FULL ARCHIVE' : `${activeCategory} COLLECTION`}
             </h2>
           </div>
 
           {/* Sort & Filter controls */}
           <div className="flex items-center justify-between sm:justify-end gap-3 pt-2 sm:pt-0">
-            <div className="flex items-center gap-2 px-3 py-1.5 sm:py-2 rounded-xl glass-panel border border-white/10 text-xs font-mono-tech text-zinc-300">
-              <SlidersHorizontal size={13} className="text-amber-400" />
+            <div className="flex items-center gap-2 px-3 py-1.5 sm:py-2 rounded-xl glass-panel bg-white border border-zinc-200 text-xs font-mono-tech text-zinc-700 shadow-xs">
+              <SlidersHorizontal size={13} className="text-teal-600" />
               <span>SORT:</span>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
                 aria-label="Sort products by"
-                className="bg-transparent text-white outline-none cursor-pointer font-bold"
+                className="bg-transparent text-zinc-900 outline-none cursor-pointer font-bold"
               >
-                <option value="featured" className="bg-zinc-900 text-white">Featured</option>
-                <option value="price-asc" className="bg-zinc-900 text-white">Price: Low to High</option>
-                <option value="price-desc" className="bg-zinc-900 text-white">Price: High to Low</option>
+                <option value="featured" className="bg-white text-zinc-900">Featured</option>
+                <option value="price-asc" className="bg-white text-zinc-900">Price: Low to High</option>
+                <option value="price-desc" className="bg-white text-zinc-900">Price: High to Low</option>
               </select>
             </div>
-            <span className="text-xs font-mono-tech text-zinc-500">
+            <span className="text-xs font-mono-tech text-zinc-400">
               ({filteredProducts.length} items)
             </span>
           </div>
@@ -206,12 +207,12 @@ export function App() {
             className="py-20 text-center space-y-3"
           >
             <p className="font-syne font-bold text-lg text-zinc-400">NO PRODUCTS FOUND</p>
-            <p className="text-xs text-zinc-500 font-mono-tech">
+            <p className="text-xs text-zinc-400 font-mono-tech">
               Try adjusting your search query or reset category filter.
             </p>
             <button
               onClick={() => { setActiveCategory('all'); setSearchQuery(''); }}
-              className="mt-4 px-6 py-2 rounded-full bg-white/10 text-white text-xs font-mono-tech uppercase hover:bg-white/20 transition-all"
+              className="mt-4 px-6 py-2 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-800 text-xs font-mono-tech uppercase hover:bg-zinc-200 transition-all font-bold"
             >
               Reset Filters
             </button>

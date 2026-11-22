@@ -24,8 +24,9 @@ export const Lookbook: React.FC<LookbookProps> = ({ products, onQuickView }) => 
       tagline: 'Engineered for night London transit',
       productId: 'awm-active-tracksuit-grey-yellow',
       bgImg: 'https://alwayswantmore.co.uk/cdn/shop/files/WhatsAppImage2026-01-01at13.23.26_2.jpg?v=1767275624&width=1200',
-      specs: '380 GSM Double Knit • Custom Luminescent Neon Piping',
-      accent: '#fbbf24',
+      specs: '380 GSM Double Knit • Custom Luminescent Piping',
+      accent: '#0d9488', // Teal
+      highlight: '#ec4899', // Pink
     },
     {
       title: 'SUB-ZERO LUXURY',
@@ -34,7 +35,8 @@ export const Lookbook: React.FC<LookbookProps> = ({ products, onQuickView }) => 
       productId: 'chenille-puffer-jacket',
       bgImg: 'https://alwayswantmore.co.uk/cdn/shop/files/backofjacket.jpg?v=1765879741&width=1200',
       specs: 'Tested to -10°C • Oversized Chenille Crest',
-      accent: '#93c5fd',
+      accent: '#06b6d4', // Cyan Teal
+      highlight: '#f43f5e', // Rose Pink
     },
     {
       title: 'VIRAL ARCHIVE',
@@ -43,7 +45,8 @@ export const Lookbook: React.FC<LookbookProps> = ({ products, onQuickView }) => 
       productId: 'been-trapping-hoodie-black',
       bgImg: 'https://alwayswantmore.co.uk/cdn/shop/files/51BCA4EA-A0F4-472B-8AAC-3CF1907CA3A8.jpg?v=1750505284&width=1200',
       specs: '450 GSM Ultra-Heavy Ringspun Cotton • Boxy Cut',
-      accent: '#d4d4d8',
+      accent: '#ec4899', // Hot Pink
+      highlight: '#0d9488', // Teal
     },
   ];
 
@@ -99,8 +102,8 @@ export const Lookbook: React.FC<LookbookProps> = ({ products, onQuickView }) => 
         className="flex flex-col sm:flex-row sm:items-end justify-between mb-6 sm:mb-8 gap-4"
       >
         <div>
-          <div className="text-[10px] sm:text-xs font-mono-tech text-amber-400 uppercase tracking-widest">EDITORIAL EDIT</div>
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-syne font-black text-white mt-1 uppercase">
+          <div className="text-[10px] sm:text-xs font-mono-tech text-teal-700 font-bold uppercase tracking-widest">EDITORIAL EDIT</div>
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-syne font-black text-zinc-950 mt-1 uppercase">
             AWM SS26 LOOKBOOK
           </h2>
         </div>
@@ -109,7 +112,7 @@ export const Lookbook: React.FC<LookbookProps> = ({ products, onQuickView }) => 
         <div className="flex items-center gap-3 self-end sm:self-auto">
           <button
             onClick={() => navigate(-1)}
-            className="p-2 sm:p-2.5 rounded-full glass-panel border border-white/15 text-zinc-300 hover:text-white hover:border-amber-400/50 hover:bg-amber-400/10 active:scale-90 transition-all"
+            className="p-2 sm:p-2.5 rounded-full glass-panel border border-zinc-200 text-zinc-700 hover:text-black hover:border-teal-400 hover:bg-teal-50 active:scale-90 transition-all shadow-xs"
             aria-label="Previous slide"
           >
             <ChevronLeft size={16} />
@@ -123,10 +126,10 @@ export const Lookbook: React.FC<LookbookProps> = ({ products, onQuickView }) => 
                 onClick={() => { setDirection(idx > activeLook ? 1 : -1); setActiveLook(idx); }}
                 animate={{
                   width: activeLook === idx ? 28 : 8,
-                  backgroundColor: activeLook === idx ? '#fbbf24' : '#3f3f46',
+                  backgroundColor: activeLook === idx ? '#0d9488' : '#e4e4e7',
                 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-                className="h-2 rounded-full"
+                className="h-2 rounded-full cursor-pointer"
                 aria-label={`Switch to slide ${idx + 1}`}
               />
             ))}
@@ -134,7 +137,7 @@ export const Lookbook: React.FC<LookbookProps> = ({ products, onQuickView }) => 
 
           <button
             onClick={() => navigate(1)}
-            className="p-2 sm:p-2.5 rounded-full glass-panel border border-white/15 text-zinc-300 hover:text-white hover:border-amber-400/50 hover:bg-amber-400/10 active:scale-90 transition-all"
+            className="p-2 sm:p-2.5 rounded-full glass-panel border border-zinc-200 text-zinc-700 hover:text-black hover:border-teal-400 hover:bg-teal-50 active:scale-90 transition-all shadow-xs"
             aria-label="Next slide"
           >
             <ChevronRight size={16} />
